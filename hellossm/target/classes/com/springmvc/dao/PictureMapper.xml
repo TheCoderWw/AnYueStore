@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.PictureMapper">
+    <select id="getPicList" parameterType="int" resultType="string">
+        select picture_address from ay_picture where commodity_id=#{commId}
+    </select>
+
+    <select id="getPicOne" parameterType="int" resultType="string">
+        select picture_address from ay_picture where commodity_id=#{commId} limit 1
+    </select>
+
+    <select id="getPicColor" parameterType="int" resultType="string">
+        select commodity_color from ay_picture where commodity_id=#{commId}
+    </select>
+
+    <select id="getPicByCart" parameterType="map" resultType="string">
+        select picture_address from ay_picture where commodity_id=#{commId} and commodity_color=#{commColor}
+    </select>
+</mapper>

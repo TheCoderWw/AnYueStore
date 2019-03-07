@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.TopMapper">
+
+    <select id="getSizeList" parameterType="int" resultType="string">
+        select top_size as sizeList from ay_top where commodity_id =#{id}
+    </select>
+
+    <select id="getInventoryList" parameterType="int" resultType="int">
+        select top_inventory as inventoryList from ay_top where commodity_id =#{id}
+    </select>
+
+    <update id="deleteInven">
+        update ay_top set top_inventory=top_inventory-#{commNum} where commodity_id=#{commId} and top_size=#{commSize}
+    </update>
+
+
+    <update id="addInven">
+        update ay_top set top_inventory=top_inventory+#{commNum} where commodity_id=#{commId} and top_size=#{commSize}
+    </update>
+
+
+
+    <select id="selectInven" parameterType="map" resultType="int">
+        select top_inventory from ay_top where commodity_id =#{commId} and top_size=#{commSize}
+    </select>
+</mapper>

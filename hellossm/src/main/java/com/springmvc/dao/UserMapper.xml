@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springmvc.dao.UserMapper">
+    <resultMap id="userMapper" type="com.springmvc.pojo.User">
+        <id property="id" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="passWord" column="user_password"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userAge" column="user_age"/>
+        <result property="userSex" column="user_sex"/>
+        <result property="userStatus" column="user_status"/>
+        <result property="userRegistTime" column="user_regist_time"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="userMoney" column="user_money"/>
+
+        <collection property="addressList" column="user_id"
+                    select="com.springmvc.dao.AddressMapper.getAddressByUserId"/>
+    </resultMap>
+
+    <select id="findUserById" parameterType="int" resultMap="userMapper">
+          select user_id,user_name,user_password,user_email,user_age,user_sex,user_status,user_regist_time,
+          user_phone,user_money from ay_user where user_id=#{id}
+      </select>
+
+    <insert id="addUser" parameterType="user" keyProperty="id" useGeneratedKeys="true">
+        insert into ay_user(user_name,user_password,user_email,user_age,user_sex,user_status,user_regist_time,user_phone,
+        user_money,user_auth_code) values (#{userName},#{passWord},#{userEmail},#{userAge},#{userSex},#{userStatus},#{userRegistTime},
+        #{userPhone},#{userMoney},#{userAuthCode})
+    </insert>
+
+    <select id="verifyAuthCode" parameterType="string" resultType="user">
+        select user_id as id,user_status as userStatus,user_regist_time as userRegistTime from ay_user where user_auth_code = #{authCode}
+    </select>
+
+    <update id="upDateByUser" parameterType="Integer">
+        update ay_user set user_status = 1 where user_id = #{id}
+    </update>
+
+
+    <select id="findUserByName" parameterType="string" resultMap="userMapper">
+            select user_id,user_name,user_password,user_email,user_age,user_sex,user_status,user_regist_time,
+    user_phone,user_money from ay_user where user_name=#{userName}
+    </select>
+
+
+    <update id="updateAllInfo" parameterType="user">
+        update ay_user set user_age=#{userAge},user_sex=#{userSex},user_phone=#{userPhone} where user_id=#{id}
+    </update>
+</mapper>

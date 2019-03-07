@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.BottomMapper">
+    <select id="getWaistLine" parameterType="int" resultType="String">
+        select bottom_waistline as waistLineList from ay_bottom where commodity_id=#{id}
+    </select>
+
+    <select id="getInventoryList" parameterType="int" resultType="Integer">
+        select bottom_inventory as inventoryList from ay_bottom where commodity_id=#{id}
+    </select>
+
+    <update id="deleteInven">
+        update ay_bottom set bottom_inventory=bottom_inventory-#{commNum} where commodity_id=#{commId} and bottom_waistline=#{commSize}
+    </update>
+
+    <update id="addInven">
+        update ay_bottom set bottom_inventory=bottom_inventory+#{commNum} where commodity_id=#{commId} and bottom_waistline=#{commSize}
+    </update>
+
+    <select id="selectInven" parameterType="map" resultType="int">
+        select bottom_inventory from ay_bottom where commodity_id =#{commId} and bottom_waistline=#{commSize}
+    </select>
+</mapper>

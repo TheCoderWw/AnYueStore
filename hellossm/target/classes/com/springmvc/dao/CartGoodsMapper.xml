@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.CartGoodsMapper">
+
+    <select id="getGoods" parameterType="int" resultType="cartGoods">
+      SELECT a.commodity_id AS commId,c.commodity_name as commName,c.commodity_price as commPrice,
+      b.picture_address as pictureAddr,a.commodity_size as goodsSize,a.commodity_color as goodsColor,
+      a.commodity_cnt as goodsSum,a.cart_id as cartId
+        FROM ay_cart AS a
+        LEFT JOIN ay_picture AS b ON a.commodity_id=b.commodity_id AND a.commodity_color=b.commodity_color
+        LEFT JOIN ay_commodity AS c ON a.commodity_id=c.commodity_id
+        WHERE a.user_id=#{userId} AND a.cart_status=1
+  </select>
+
+
+</mapper>

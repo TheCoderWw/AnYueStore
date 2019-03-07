@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.CommodityMapper">
+    <resultMap id="commMapper" type="com.springmvc.pojo.Commodity">
+        <id property="commId" column="commodity_id"/>
+        <result property="commName" column="commodity_name"/>
+        <result property="classifyId" column="classify_id"/>
+        <result property="commPrice" column="commodity_price"/>
+        <result property="commStatus" column="commodity_status"/>
+        <collection property="allPicAddress" column="commodity_id"
+                    select="com.springmvc.dao.PictureMapper.getPicList"/>
+        <collection property="allPicColor" column="commodity_id"
+                    select="com.springmvc.dao.PictureMapper.getPicColor">
+        </collection>
+        <!--<discriminator javaType="int" column="classify_id">-->
+            <!--<case value="3" resultMap="topSizeListMapper"/>-->
+            <!--<case value="4" resultMap="bottomWaistLineMapper"/>-->
+        <!--</discriminator>-->
+    </resultMap>
+
+    <select id="getCommById" parameterType="int" resultMap="commMapper">
+        select commodity_id,commodity_name,classify_id,commodity_price,commodity_status from ay_commodity where commodity_id=#{id}
+    </select>
+
+</mapper>

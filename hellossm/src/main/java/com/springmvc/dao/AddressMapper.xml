@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.AddressMapper">
+    <select id="getAddressByUserId" parameterType="int" resultType="com.springmvc.pojo.Address">
+        select address_id as id,user_id as userId,address_name as addrName,address_cnee as cnee,address_phone as addrPhone
+        from ay_address where user_id = #{id} and address_status = 1;
+    </select>
+
+    <insert id="addAddress" parameterType="address">
+        insert into ay_address values (0,#{userId},#{addrName},#{cnee},#{addrPhone},1)
+    </insert>
+
+    <update id="updateAddress" parameterType="address">
+        update ay_address set address_name=#{addrName},address_cnee=#{cnee},address_phone=#{addrPhone} where address_id=#{id}
+    </update>
+
+    <update id="deleteAddress" parameterType="int">
+        update ay_address set address_status=0 where address_id=#{addrId}
+    </update>
+
+    <select id="selectAddressById" parameterType="int" resultType="address">
+                select address_id as id,user_id as userId,address_name as addrName,address_cnee as cnee,address_phone as addrPhone
+        from ay_address where address_id=#{addrId}
+    </select>
+</mapper>

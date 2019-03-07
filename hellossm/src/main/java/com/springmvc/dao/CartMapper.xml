@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.CartMapper">
+
+    <insert id="addGoods" parameterType="map">
+        insert into ay_cart(user_id,commodity_id,commodity_size,commodity_color,commodity_cnt) values (#{userId},
+        #{cartGoods.commId},#{cartGoods.goodsSize},#{cartGoods.goodsColor},#{cartGoods.goodsSum})
+    </insert>
+
+    <update id="deleteGoods" parameterType="list">
+        update ay_cart set cart_status=0 where cart_id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.cartId}
+        </foreach>
+    </update>
+
+    <update id="deleteItem" parameterType="int">
+       UPDATE ay_cart AS a SET a.cart_status=0
+       WHERE
+       a.commodity_id IN (SELECT b.commodity_id FROM ay_item AS b WHERE b.orderform_id=#{orderId})
+       AND
+       a.commodity_size IN (SELECT c.commodity_size FROM ay_item AS c WHERE c.orderform_id=#{orderId})
+       AND
+       a.commodity_color IN (SELECT d.commodity_color FROM ay_item AS d WHERE d.orderform_id=#{orderId})
+    </update>
+
+
+</mapper>

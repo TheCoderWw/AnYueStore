@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.OrderMapper">
+    <!--<select id="selectOrderByUserId" parameterType="int" resultType="order">-->
+
+    <!--</select>-->
+    <insert id="insertOrder" parameterType="order" keyProperty="id" useGeneratedKeys="true">
+        insert into ay_orderform(user_id,orderform_time,address_id) values (#{userId},#{orderTime},#{addrId})
+    </insert>
+
+    <insert id="insertItem">
+        insert into ay_item(commodity_id,commodity_size,commodity_color,orderform_id,item_number,item_price) values
+        <foreach collection ="list" item="item" index= "index" separator =",">
+            (
+            #{item.commId},#{item.commSize},#{item.commColor},#{orderId},#{item.itemNum},#{item.itemPrice}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectAllOrderByUser" parameterType="int" resultType="item">
+        SELECT b.item_id AS id,b.commodity_id AS commId,c.commodity_name AS commName,
+        b.commodity_size AS commSize,b.commodity_color AS commColor,b.item_number AS itemNum,
+        b.item_price AS itemPrice,d.picture_address as picAddress
+        FROM ay_orderform AS a
+        LEFT JOIN ay_item AS b
+        ON a.orderform_id=b.orderform_id
+        LEFT JOIN ay_commodity AS c
+        ON b.commodity_id=c.commodity_id
+	    LEFT JOIN ay_picture AS d
+	    ON b.commodity_id=d.commodity_id AND b.commodity_color=d.commodity_color
+        WHERE a.orderform_id=#{list}
+    </select>
+
+    <select id="selectOrderBase" parameterType="int" resultType="order">
+        select orderform_id as id,orderform_time as orderTime,orderform_status as orderStatus,address_id as addrId
+        from ay_orderform where user_id=#{userId}
+    </select>
+
+    <select id="selectOrderOne" parameterType="int" resultType="order">
+        select orderform_id as id,orderform_time as orderTime,orderform_status as orderStatus,address_id as addrId
+        from ay_orderform where orderform_id=#{orderId}
+    </select>
+
+    <update id="upOrderStatus" parameterType="map">
+        update ay_orderform set orderform_status=#{status} where orderform_id=#{orderId}
+    </update>
+
+    <select id="selectStatusById" parameterType="int" resultType="int">
+        select orderform_status from ay_orderform where orderform_id=#{orderId}
+    </select>
+
+    <update id="updateOrderAddr" parameterType="map">
+        update ay_orderform set address_id=#{addressId} where orderform_id=#{orderId}
+    </update>
+
+
+
+    <select id="selectAllOrderById" parameterType="int" resultType="item">
+        SELECT b.item_id AS id,b.commodity_id AS commId,
+        b.commodity_size AS commSize,b.item_number AS itemNum
+        FROM ay_orderform AS a
+        LEFT JOIN ay_item AS b
+        ON a.orderform_id=b.orderform_id
+        WHERE a.orderform_id=#{orderId}
+    </select>
+</mapper>

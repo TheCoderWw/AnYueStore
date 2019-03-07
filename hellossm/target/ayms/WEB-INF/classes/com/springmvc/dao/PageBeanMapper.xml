@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc.dao.PageBeanMapper">
+    <resultMap id="searchGoodsMap" type="com.springmvc.pojo.SearchGoods">
+        <id property="commId" column="commodity_id"/>
+        <result property="commName" column="commodity_name"/>
+        <result property="commPrice" column="commodity_price"/>
+        <association property="pictureAddr" column="commodity_id"
+                     select="com.springmvc.dao.PictureMapper.getPicOne">
+        </association>
+    </resultMap>
+
+    <select id="getBeanAllNum" parameterType="string" resultType="int">
+        select count(*) from ay_commodity where commodity_name like #{goodsName}
+    </select>
+
+
+    <select id="getGoodsByPageNow" parameterType="map" resultMap="searchGoodsMap">
+        select commodity_id,commodity_name,commodity_price from ay_commodity where commodity_name like #{goodsName} limit ${(pageNow-1)*pageSize},${pageSize};
+    </select>
+</mapper>
